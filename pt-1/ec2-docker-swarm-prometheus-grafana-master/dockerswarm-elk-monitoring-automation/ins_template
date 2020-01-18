@@ -1,0 +1,15 @@
+[docker_engine]
+${master_public_ip} ansible_ssh_user=centos ansible_become=yes
+${worker01_public_ip} ansible_ssh_user=centos ansible_become=yes
+${worker02_public_ip} ansible_ssh_user=centos ansible_become=yes
+
+[docker_swarm_manager]
+${master_public_ip} swarm_labels=deploy
+
+[docker_swarm_worker]
+${worker01_public_ip} swarm_labels='["libvirt", "docker", "foo", "bar"]'
+${worker02_public_ip}
+
+[elk]
+${master_public_ip} ansible_ssh_user=centos ansible_become=yes
+

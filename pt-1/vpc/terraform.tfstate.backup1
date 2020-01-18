@@ -1,0 +1,672 @@
+{
+"modules": [
+{
+  "version": 4,
+  "terraform_version": "0.12.19",
+  "serial": 222,
+  "lineage": "8257f3f7-134c-52bd-2d3d-40bab9bb24d4",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "managed",
+      "type": "aws_eip",
+      "name": "nat",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "allocation_id": null,
+            "associate_with_private_ip": null,
+            "association_id": "",
+            "domain": "vpc",
+            "id": "eipalloc-0110451886f5c2d25",
+            "instance": "",
+            "network_interface": "",
+            "private_dns": null,
+            "private_ip": "",
+            "public_dns": "ec2-3-12-24-197.us-east-2.compute.amazonaws.com",
+            "public_ip": "3.12.24.197",
+            "public_ipv4_pool": "amazon",
+            "tags": null,
+            "timeouts": null,
+            "vpc": true
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjoxODAwMDAwMDAwMDAsInJlYWQiOjkwMDAwMDAwMDAwMCwidXBkYXRlIjozMDAwMDAwMDAwMDB9fQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_internet_gateway",
+      "name": "hv-gw",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "igw-0a3c9e5eb0f1b4772",
+            "owner_id": "150600325810",
+            "tags": {
+              "Name": "hv"
+            },
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_vpc.hv"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_nat_gateway",
+      "name": "nat-gw",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "allocation_id": "eipalloc-0110451886f5c2d25",
+            "id": "nat-090f63c156000ccce",
+            "network_interface_id": "eni-00552d52ab99790b4",
+            "private_ip": "10.1.1.104",
+            "public_ip": "3.12.24.197",
+            "subnet_id": "subnet-08c874fc4ef1e8980",
+            "tags": null
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_eip.nat",
+            "aws_internet_gateway.hv-gw",
+            "aws_subnet.hv-public-1",
+            "aws_vpc.hv"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route",
+      "name": "mi-aiops",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "destination_cidr_block": "10.1.0.0/16",
+            "destination_ipv6_cidr_block": null,
+            "destination_prefix_list_id": "",
+            "egress_only_gateway_id": "",
+            "gateway_id": "",
+            "id": "r-rtb-09ac2e623322942084",
+            "instance_id": "",
+            "instance_owner_id": "",
+            "nat_gateway_id": "",
+            "network_interface_id": "",
+            "origin": "CreateRoute",
+            "route_table_id": "rtb-09ac2e62",
+            "state": "active",
+            "timeouts": null,
+            "transit_gateway_id": "",
+            "vpc_peering_connection_id": "pcx-082dcf54c8e6d4db1"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "aws_vpc.hv",
+            "aws_vpc_peering_connection.vpc-peer"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route_table",
+      "name": "hv-private-1",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "rtb-0a9ac768851471aa7",
+            "owner_id": "150600325810",
+            "propagating_vgws": [],
+            "route": [
+              {
+                "cidr_block": "0.0.0.0/0",
+                "egress_only_gateway_id": "",
+                "gateway_id": "",
+                "instance_id": "",
+                "ipv6_cidr_block": "",
+                "nat_gateway_id": "nat-090f63c156000ccce",
+                "network_interface_id": "",
+                "transit_gateway_id": "",
+                "vpc_peering_connection_id": ""
+              },
+              {
+                "cidr_block": "172.31.0.0/16",
+                "egress_only_gateway_id": "",
+                "gateway_id": "",
+                "instance_id": "",
+                "ipv6_cidr_block": "",
+                "nat_gateway_id": "",
+                "network_interface_id": "",
+                "transit_gateway_id": "",
+                "vpc_peering_connection_id": "pcx-082dcf54c8e6d4db1"
+              }
+            ],
+            "tags": {
+              "Name": "hv-private-1"
+            },
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_eip.nat",
+            "aws_internet_gateway.hv-gw",
+            "aws_nat_gateway.nat-gw",
+            "aws_subnet.hv-public-1",
+            "aws_vpc.hv",
+            "aws_vpc_peering_connection.vpc-peer"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route_table",
+      "name": "hv-public",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "rtb-0bb432b0a80f4d3e6",
+            "owner_id": "150600325810",
+            "propagating_vgws": [],
+            "route": [
+              {
+                "cidr_block": "0.0.0.0/0",
+                "egress_only_gateway_id": "",
+                "gateway_id": "igw-0a3c9e5eb0f1b4772",
+                "instance_id": "",
+                "ipv6_cidr_block": "",
+                "nat_gateway_id": "",
+                "network_interface_id": "",
+                "transit_gateway_id": "",
+                "vpc_peering_connection_id": ""
+              },
+              {
+                "cidr_block": "172.31.0.0/16",
+                "egress_only_gateway_id": "",
+                "gateway_id": "",
+                "instance_id": "",
+                "ipv6_cidr_block": "",
+                "nat_gateway_id": "",
+                "network_interface_id": "",
+                "transit_gateway_id": "",
+                "vpc_peering_connection_id": "pcx-082dcf54c8e6d4db1"
+              }
+            ],
+            "tags": {
+              "Name": "hv-public-1"
+            },
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_internet_gateway.hv-gw",
+            "aws_vpc.hv",
+            "aws_vpc_peering_connection.vpc-peer"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route_table_association",
+      "name": "hv-private-1",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": null,
+            "id": "rtbassoc-008a6b916d9c2a0c9",
+            "route_table_id": "rtb-0a9ac768851471aa7",
+            "subnet_id": "subnet-07ba3870e9745983f"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_eip.nat",
+            "aws_internet_gateway.hv-gw",
+            "aws_nat_gateway.nat-gw",
+            "aws_route_table.hv-private-1",
+            "aws_subnet.hv-private-1",
+            "aws_subnet.hv-public-1",
+            "aws_vpc.hv",
+            "aws_vpc_peering_connection.vpc-peer"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route_table_association",
+      "name": "hv-public-1-a",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": null,
+            "id": "rtbassoc-0706bbec312ea856f",
+            "route_table_id": "rtb-0bb432b0a80f4d3e6",
+            "subnet_id": "subnet-08c874fc4ef1e8980"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_internet_gateway.hv-gw",
+            "aws_route_table.hv-public",
+            "aws_subnet.hv-public-1",
+            "aws_vpc.hv",
+            "aws_vpc_peering_connection.vpc-peer"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route_table_association",
+      "name": "hv-public-2-a",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": null,
+            "id": "rtbassoc-092f44333dda73c38",
+            "route_table_id": "rtb-0bb432b0a80f4d3e6",
+            "subnet_id": "subnet-054db65afc8c998bf"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_internet_gateway.hv-gw",
+            "aws_route_table.hv-public",
+            "aws_subnet.hv-public-2",
+            "aws_vpc.hv",
+            "aws_vpc_peering_connection.vpc-peer"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_route_table_association",
+      "name": "hv-public-3-a",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": null,
+            "id": "rtbassoc-0f5c883c8c1172cb9",
+            "route_table_id": "rtb-0bb432b0a80f4d3e6",
+            "subnet_id": "subnet-0977e3c7887613ceb"
+          },
+          "private": "bnVsbA==",
+          "dependencies": [
+            "aws_internet_gateway.hv-gw",
+            "aws_route_table.hv-public",
+            "aws_subnet.hv-public-3",
+            "aws_vpc.hv",
+            "aws_vpc_peering_connection.vpc-peer"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "aiops-test",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-2:150600325810:security-group/sg-0379ab8697f712a36",
+            "description": "Allow all inbound traffic",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-0379ab8697f712a36",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 65535
+              },
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 22,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 22
+              }
+            ],
+            "name": "aiops test",
+            "name_prefix": null,
+            "owner_id": "150600325810",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "aiops test"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "aws_vpc.hv"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "hv-private-1",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-2:150600325810:subnet/subnet-07ba3870e9745983f",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-2a",
+            "availability_zone_id": "use2-az1",
+            "cidr_block": "10.1.4.0/24",
+            "id": "subnet-07ba3870e9745983f",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "map_public_ip_on_launch": false,
+            "owner_id": "150600325810",
+            "tags": {
+              "Name": "hv-private-1"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.hv"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "hv-private-2",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-2:150600325810:subnet/subnet-0f42e198bdf8b14ff",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-2b",
+            "availability_zone_id": "use2-az2",
+            "cidr_block": "10.1.5.0/24",
+            "id": "subnet-0f42e198bdf8b14ff",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "map_public_ip_on_launch": false,
+            "owner_id": "150600325810",
+            "tags": {
+              "Name": "hv-private-2"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.hv"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "hv-private-3",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-2:150600325810:subnet/subnet-0a500d7eb3b0a9da2",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-2c",
+            "availability_zone_id": "use2-az3",
+            "cidr_block": "10.1.6.0/24",
+            "id": "subnet-0a500d7eb3b0a9da2",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "map_public_ip_on_launch": false,
+            "owner_id": "150600325810",
+            "tags": {
+              "Name": "hv-private-3"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.hv"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "hv-public-1",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-2:150600325810:subnet/subnet-08c874fc4ef1e8980",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-2a",
+            "availability_zone_id": "use2-az1",
+            "cidr_block": "10.1.1.0/24",
+            "id": "subnet-08c874fc4ef1e8980",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "map_public_ip_on_launch": true,
+            "owner_id": "150600325810",
+            "tags": {
+              "Name": "hv-public-1"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.hv"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "hv-public-2",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-2:150600325810:subnet/subnet-054db65afc8c998bf",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-2b",
+            "availability_zone_id": "use2-az2",
+            "cidr_block": "10.1.2.0/24",
+            "id": "subnet-054db65afc8c998bf",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "map_public_ip_on_launch": true,
+            "owner_id": "150600325810",
+            "tags": {
+              "Name": "hv-public-2"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.hv"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "hv-public-3",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-2:150600325810:subnet/subnet-0977e3c7887613ceb",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "us-east-2c",
+            "availability_zone_id": "use2-az3",
+            "cidr_block": "10.1.3.0/24",
+            "id": "subnet-0977e3c7887613ceb",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "map_public_ip_on_launch": true,
+            "owner_id": "150600325810",
+            "tags": {
+              "Name": "hv-public-3"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "aws_vpc.hv"
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc",
+      "name": "hv",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:us-east-2:150600325810:vpc/vpc-03537ebaab9c5b0e6",
+            "assign_generated_ipv6_cidr_block": false,
+            "cidr_block": "10.1.0.0/16",
+            "default_network_acl_id": "acl-09529cebbdf6c1939",
+            "default_route_table_id": "rtb-0582131e7d816e60e",
+            "default_security_group_id": "sg-048f295b58ea3d6f3",
+            "dhcp_options_id": "dopt-e5e8378e",
+            "enable_classiclink": false,
+            "enable_classiclink_dns_support": null,
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "id": "vpc-03537ebaab9c5b0e6",
+            "instance_tenancy": "default",
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "main_route_table_id": "rtb-0582131e7d816e60e",
+            "owner_id": "150600325810",
+            "tags": {
+              "Name": "hv"
+            }
+          },
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "aws_vpc_peering_connection",
+      "name": "vpc-peer",
+      "provider": "provider.aws",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "accept_status": "active",
+            "accepter": [
+              {
+                "allow_classic_link_to_remote_vpc": false,
+                "allow_remote_vpc_dns_resolution": false,
+                "allow_vpc_to_remote_classic_link": false
+              }
+            ],
+            "auto_accept": true,
+            "id": "pcx-082dcf54c8e6d4db1",
+            "peer_owner_id": "150600325810",
+            "peer_region": "us-east-2",
+            "peer_vpc_id": "vpc-9743b9fc",
+            "requester": [
+              {
+                "allow_classic_link_to_remote_vpc": false,
+                "allow_remote_vpc_dns_resolution": false,
+                "allow_vpc_to_remote_classic_link": false
+              }
+            ],
+            "tags": {
+              "Name": "VPC Peering between openshift and mi-aiops"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-03537ebaab9c5b0e6"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMCwiZGVsZXRlIjo2MDAwMDAwMDAwMCwidXBkYXRlIjo2MDAwMDAwMDAwMH19",
+          "dependencies": [
+            "aws_vpc.hv"
+          ]
+        }
+      ]
+    }
+  ]
+}
+]
+}

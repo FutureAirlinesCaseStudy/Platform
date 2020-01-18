@@ -1,0 +1,67 @@
+---
+# tasks file for ec2-provision
+
+- name: EC2 DockerSWARM and ELK Automation
+  ec2:
+         key_name: "{{ keypair }}"
+         group: "{{ security_group }}"
+         instance_type: "{{ instance_type }}"
+         image: "{{ image }}"
+         wait: true
+         region: "{{ region }}"
+         count: 1
+         volumes:
+         - device_name: /dev/sda1
+           volume_size: 30
+         vpc_subnet_id: subnet-02a4f7daf7fd84754
+         assign_public_ip: yes
+         instance_tags:
+          Name: cris-{{item}}
+  register: ec2
+  with_items:
+   - master
+
+- name: EC2 DockerSWARM worker-01
+  ec2:
+         key_name: "{{ keypair }}"
+         group: "{{ security_group }}"
+         instance_type: "{{ instance_type }}"
+         image: "{{ image }}"
+         wait: true
+         region: "{{ region }}"
+         count: 1
+         volumes:
+         - device_name: /dev/sda1
+           volume_size: 30
+         vpc_subnet_id: ${hv-public-2}
+         assign_public_ip: yes
+         instance_tags:
+          Name: cris-{{item}}
+  register: ec2
+  with_items:
+   - worker01
+
+- name: EC2 DockerSWARM worker-02
+  ec2:
+         key_name: "{{ keypair }}"
+         group: "{{ security_group }}"
+         instance_type: "{{ instance_type }}"
+         image: "{{ image }}"
+         wait: true
+         region: "{{ region }}"
+         count: 1
+         volumes:
+         - device_name: /dev/sda1
+           volume_size: 30
+         vpc_subnet_id: ${hv-public-3}
+         assign_public_ip: yes
+         instance_tags:
+          Name: cris-{{item}}
+  register: ec2
+  with_items:
+   - worker02
+
+
+- name: Execute Public IP to Hosts file script
+  command: sh /home/ubuntu/pt-1/ec2-docker-swarm-prometheus-grafana-master/dockerswarm-elk-monitoring-automation/hosts.sh
+

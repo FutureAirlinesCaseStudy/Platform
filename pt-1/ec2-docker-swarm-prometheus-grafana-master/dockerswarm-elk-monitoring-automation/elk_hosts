@@ -1,0 +1,2 @@
+[elk]
+${master_public_ip} ansible_ssh_user=centos ansible_become=yes

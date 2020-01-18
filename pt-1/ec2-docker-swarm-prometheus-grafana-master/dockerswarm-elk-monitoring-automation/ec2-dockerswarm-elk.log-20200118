@@ -1,0 +1,215 @@
+[WARNING]: provided hosts list is empty, only localhost is available. Note that the implicit localhost does not match 'all'
+[WARNING]: Found variable using reserved name: gather_facts
+
+PLAY [localhost] ********************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************
+ok: [localhost]
+
+TASK [ec2-provision : EC2 DockerSWARM and ELK Automation] ***************************************************************************************************
+changed: [localhost] => (item=master)
+
+TASK [ec2-provision : EC2 DockerSWARM worker-01] ************************************************************************************************************
+changed: [localhost] => (item=worker01)
+
+TASK [ec2-provision : EC2 DockerSWARM worker-02] ************************************************************************************************************
+changed: [localhost] => (item=worker02)
+
+TASK [ec2-provision : Execute Public IP to Hosts file script] ***********************************************************************************************
+changed: [localhost]
+
+PLAY RECAP **************************************************************************************************************************************************
+localhost                  : ok=5    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+[DEPRECATION WARNING]: The use of 'static' has been deprecated. Use 'import_tasks' for static inclusion, or 'include_tasks' for dynamic inclusion. This 
+feature will be removed in version 2.12. Deprecation warnings can be disabled by setting deprecation_warnings=False in ansible.cfg.
+
+PLAY [Provision Docker Swarm Cluster] ***********************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************
+ok: [10.1.3.189]
+ok: [10.1.1.149]
+fatal: [10.1.2.169]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: ssh: connect to host 10.1.2.169 port 22: Connection timed out", "unreachable": true}
+
+TASK [ansible-dockerswarm : Include os-specific variables.] *************************************************************************************************
+ok: [10.1.1.149]
+ok: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Update APT cache.] **************************************************************************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Install python-pip.] ************************************************************************************************************
+changed: [10.1.1.149] => (item=epel-release)
+changed: [10.1.3.189] => (item=epel-release)
+changed: [10.1.1.149] => (item=python-pip)
+changed: [10.1.3.189] => (item=python-pip)
+
+TASK [ansible-dockerswarm : Install the Python SNI support packages.] ***************************************************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Install the Python SNI python-pip dependencies.] ********************************************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : include] ************************************************************************************************************************
+included: /home/ubuntu/pt-1/ec2-docker-swarm-prometheus-grafana-master/dockerswarm-elk-monitoring-automation/ansible-dockerswarm/tasks/repo-RedHat.yml for 10.1.1.149, 10.1.3.189
+
+TASK [ansible-dockerswarm : Install yum-utils if necessary.] ************************************************************************************************
+ok: [10.1.3.189]
+ok: [10.1.1.149]
+
+TASK [ansible-dockerswarm : Add the YUM Docker repository.] *************************************************************************************************
+changed: [10.1.3.189]
+changed: [10.1.1.149]
+
+TASK [ansible-dockerswarm : Install Docker dependencies.] ***************************************************************************************************
+ok: [10.1.3.189]
+ok: [10.1.1.149]
+
+TASK [ansible-dockerswarm : Prefix the Docker package version with the correct separator on RedHat] *********************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Prefix the Docker package version with the correct separator on Debian] *********************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Install Docker.] ****************************************************************************************************************
+changed: [10.1.3.189]
+changed: [10.1.1.149]
+
+TASK [ansible-dockerswarm : Make sure the Docker daemon configuration directory exists] *********************************************************************
+changed: [10.1.3.189]
+changed: [10.1.1.149]
+
+TASK [ansible-dockerswarm : Configure the Docker deamon.] ***************************************************************************************************
+changed: [10.1.1.149]
+changed: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Enable the Docker daemon service and start it.] *********************************************************************************
+changed: [10.1.1.149]
+changed: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Install docker-py 1.9.0.] *******************************************************************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Install docker-py.] *************************************************************************************************************
+changed: [10.1.3.189]
+changed: [10.1.1.149]
+
+TASK [ansible-dockerswarm : Add the Docker administrators to the Docker group] ******************************************************************************
+changed: [10.1.3.189] => (item=root)
+changed: [10.1.1.149] => (item=root)
+
+TASK [ansible-dockerswarm : Reset ansible connection after group changes (Ansible < 2.3.0).] ****************************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Reset ansible connection after group changes (Ansible >= 2.3.0).] ***************************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Create a custom Swarm network.] *************************************************************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Check if "Swarm Mode" is enabled.] **********************************************************************************************
+ok: [10.1.3.189]
+ok: [10.1.1.149]
+
+TASK [ansible-dockerswarm : Init "Swarm Mode" on the first manager.] ****************************************************************************************
+skipping: [10.1.3.189]
+changed: [10.1.1.149]
+
+TASK [ansible-dockerswarm : Get the worker join-token.] *****************************************************************************************************
+skipping: [10.1.1.149]
+ok: [10.1.3.189 -> 10.1.1.149]
+
+TASK [ansible-dockerswarm : Get the manager join-token.] ****************************************************************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Declare the address of the first Swarm manager as a fact.] **********************************************************************
+skipping: [10.1.3.189]
+ok: [10.1.1.149]
+
+TASK [ansible-dockerswarm : Distribute the fact containing address of the first Swarm manager.] *************************************************************
+skipping: [10.1.1.149]
+ok: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Join the pending Swarm worker nodes.] *******************************************************************************************
+skipping: [10.1.1.149]
+ok: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Join the pending Swarm manager nodes.] ******************************************************************************************
+skipping: [10.1.1.149]
+skipping: [10.1.3.189]
+
+TASK [ansible-dockerswarm : Get list of labels.] ************************************************************************************************************
+ok: [10.1.1.149 -> 10.1.1.149]
+ok: [10.1.3.189 -> 10.1.1.149]
+
+TASK [ansible-dockerswarm : Remove labels from swarm node.] *************************************************************************************************
+
+TASK [ansible-dockerswarm : Assign labels to swarm nodes if any.] *******************************************************************************************
+changed: [10.1.1.149 -> 10.1.1.149] => (item=deploy)
+
+RUNNING HANDLER [ansible-dockerswarm : restart docker] ******************************************************************************************************
+changed: [10.1.1.149]
+changed: [10.1.3.189]
+
+RUNNING HANDLER [ansible-dockerswarm : clean yum cache] *****************************************************************************************************
+changed: [10.1.3.189]
+changed: [10.1.1.149]
+
+PLAY RECAP **************************************************************************************************************************************************
+10.1.1.149                 : ok=20   changed=12   unreachable=0    failed=0    skipped=15   rescued=0    ignored=0   
+10.1.2.169                 : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+10.1.3.189                 : ok=20   changed=10   unreachable=0    failed=0    skipped=15   rescued=0    ignored=0   
+
+
+PLAY [Install ELK] ******************************************************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************
+ok: [10.1.1.149]
+
+TASK [elk : Copy a dockerswarm-elk-monitoring-automation/elk] ***********************************************************************************************
+changed: [10.1.1.149]
+
+TASK [elk : Execute the script] *****************************************************************************************************************************
+changed: [10.1.1.149]
+
+PLAY RECAP **************************************************************************************************************************************************
+10.1.1.149                 : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+PLAY [Install MetricBeat, Docker Metrics and AuditBeat] *****************************************************************************************************
+
+TASK [Gathering Facts] **************************************************************************************************************************************
+ok: [10.1.3.189]
+ok: [10.1.2.169]
+ok: [10.1.1.149]
+
+TASK [filebeat : Copy a dockerswarm-elk-monitoring-automation/elk] ******************************************************************************************
+changed: [10.1.3.189]
+changed: [10.1.2.169]
+changed: [10.1.1.149]
+
+TASK [filebeat : Execute the script] ************************************************************************************************************************
+changed: [10.1.2.169]
+changed: [10.1.3.189]
+changed: [10.1.1.149]
+
+TASK [filebeat : Jenkins Mount Directory] *******************************************************************************************************************
+fatal: [10.1.1.149]: FAILED! => {"changed": true, "cmd": ["sh", "mkdir", "-p", "$HOME/docker/jenkins"], "delta": "0:00:00.005360", "end": "2020-01-18 08:28:58.816085", "msg": "non-zero return code", "rc": 126, "start": "2020-01-18 08:28:58.810725", "stderr": "/bin/mkdir: /bin/mkdir: cannot execute binary file", "stderr_lines": ["/bin/mkdir: /bin/mkdir: cannot execute binary file"], "stdout": "", "stdout_lines": []}
+fatal: [10.1.3.189]: FAILED! => {"changed": true, "cmd": ["sh", "mkdir", "-p", "$HOME/docker/jenkins"], "delta": "0:00:00.003204", "end": "2020-01-18 08:28:58.829345", "msg": "non-zero return code", "rc": 126, "start": "2020-01-18 08:28:58.826141", "stderr": "/bin/mkdir: /bin/mkdir: cannot execute binary file", "stderr_lines": ["/bin/mkdir: /bin/mkdir: cannot execute binary file"], "stdout": "", "stdout_lines": []}
+fatal: [10.1.2.169]: FAILED! => {"changed": true, "cmd": ["sh", "mkdir", "-p", "$HOME/docker/jenkins"], "delta": "0:00:00.003172", "end": "2020-01-18 08:28:58.831872", "msg": "non-zero return code", "rc": 126, "start": "2020-01-18 08:28:58.828700", "stderr": "/bin/mkdir: /bin/mkdir: cannot execute binary file", "stderr_lines": ["/bin/mkdir: /bin/mkdir: cannot execute binary file"], "stdout": "", "stdout_lines": []}
+
+PLAY RECAP **************************************************************************************************************************************************
+10.1.1.149                 : ok=3    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+10.1.2.169                 : ok=3    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+10.1.3.189                 : ok=3    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+

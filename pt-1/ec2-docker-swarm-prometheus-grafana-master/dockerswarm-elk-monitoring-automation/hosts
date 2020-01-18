@@ -1,0 +1,15 @@
+[docker_engine]
+10.1.1.149 ansible_ssh_user=centos ansible_become=yes
+10.1.2.169 ansible_ssh_user=centos ansible_become=yes
+10.1.3.189 ansible_ssh_user=centos ansible_become=yes
+
+[docker_swarm_manager]
+10.1.1.149 swarm_labels=deploy
+
+[docker_swarm_worker]
+10.1.2.169 swarm_labels='["libvirt", "docker", "foo", "bar"]'
+10.1.3.189
+
+[elk]
+10.1.1.149 ansible_ssh_user=centos ansible_become=yes
+

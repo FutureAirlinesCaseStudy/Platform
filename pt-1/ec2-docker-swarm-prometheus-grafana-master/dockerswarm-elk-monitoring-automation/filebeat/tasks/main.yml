@@ -1,0 +1,17 @@
+---
+# tasks file for filebeat
+
+- name: 'Copy a dockerswarm-elk-monitoring-automation/elk '
+  copy: {src: /home/ubuntu/pt-1/ec2-docker-swarm-prometheus-grafana-master/dockerswarm-elk-monitoring-automation/filebeat.sh, dest: /opt}
+
+- name: 'Execute the script'
+  command: 'sh /opt/filebeat.sh'
+
+- name: 'Jenkins Mount Directory'
+  file:
+    path: /home/centos/docker/jenkins
+    state: directory
+    owner: centos
+    group: centos
+    mode: 0775
+    recurse: yes

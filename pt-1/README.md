@@ -10,7 +10,11 @@ By executing master.sh, below full list of actions pack will be executed.
 5. DEPLOYING JENKINS MASTER ON DOCKER SWARM  
 
 ### Requirements
-1. Terraform
-2. Ansible
-3. AWS CLI
-4. JQ
+1. AWS Account
+2. EC2 (T2 MICRO) Instance on Default VPC, as Automation Server with below Software. 
+  1. Terraform
+  2. Ansible
+  3. AWS CLI
+  4. JQ
+3. Create and Attach AWS IAM Admin Role to Automation Server.   
+ 
